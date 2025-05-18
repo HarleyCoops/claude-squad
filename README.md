@@ -1,104 +1,101 @@
-# Claude Squad [![CI](https://github.com/smtg-ai/claude-squad/actions/workflows/build.yml/badge.svg)](https://github.com/smtg-ai/claude-squad/actions/workflows/build.yml) [![GitHub Release](https://img.shields.io/github/v/release/smtg-ai/claude-squad)](https://github.com/smtg-ai/claude-squad/releases/latest)
+# Chrome History Analyzer
 
-Claude Squad is a terminal app that manages multiple [Claude Code](https://github.com/anthropics/claude-code), [Codex](https://github.com/openai/codex) (and other local agents including Aider) in separate workspaces, allowing you to work on multiple tasks simultaneously.
+A Python tool to extract and analyze your Chrome browsing history to gain insights about your browsing patterns, sleep habits, work focus, and interests.
 
-![Claude Squad Screenshot](assets/screenshot.png)
+## Features
 
-### Highlights
-- Complete tasks in the background (including yolo / auto-accept mode!)
-- Manage instances and tasks in one terminal window
-- Review changes before applying them, checkout changes before pushing them
-- Each task gets its own isolated git workspace, so no conflicts
+- Extract Chrome browsing history from the local SQLite database
+- Analyze browsing patterns by hour and day of week
+- Identify top visited domains
+- Estimate sleep patterns based on first and last browsing times
+- Generate prompts for LLM analysis
+- Export data in CSV, JSON, or Markdown formats
 
-<br />
-
-https://github.com/user-attachments/assets/aef18253-e58f-4525-9032-f5a3d66c975a
-
-<br />
-
-### Installation
-
-The easiest way to install `claude-squad` is by running the following command:
+## Installation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/stmg-ai/claude-squad/main/install.sh | bash
+# Clone the repository
+git clone https://github.com/yourusername/chrome-history-analyzer.git
+cd chrome-history-analyzer
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-This will install the `cs` binary to `~/.local/bin` and add it to your PATH. To install with a different name, use the `--name` flag:
+## Usage
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/stmg-ai/claude-squad/main/install.sh | bash -s -- --name <name>
+# Basic usage (analyzes last 30 days of history)
+python chrome_history_analyzer.py
+
+# Analyze a specific number of days
+python chrome_history_analyzer.py --days 7
+
+# Export in different formats
+python chrome_history_analyzer.py --output csv
+python chrome_history_analyzer.py --output json
+python chrome_history_analyzer.py --output markdown
 ```
 
-Alternatively, you can also install `claude-squad` by building from source or installing a [pre-built binary](https://github.com/smtg-ai/claude-squad/releases).
+## LLM Integration
 
-### Prerequisites
+The tool generates a prompt file (`output/llm_prompt.txt`) that you can use with any LLM (like OpenAI's GPT models) to get AI-powered insights about your browsing habits.
 
-- [tmux](https://github.com/tmux/tmux/wiki/Installing)
-- [gh](https://cli.github.com/)
+### Example LLM Integration
 
-### Usage
+```python
+import openai
+import os
 
+# Set your OpenAI API key
+openai.api_key = os.environ.get("OPENAI_API_KEY")
+
+# Read the generated prompt
+with open('output/llm_prompt.txt', 'r') as f:
+    prompt = f.read()
+
+# Send to OpenAI for analysis
+response = openai.ChatCompletion.create(
+    model="gpt-4",
+    messages=[{"role": "user", "content": prompt}]
+)
+
+# Print the insights
+print(response.choices[0].message.content)
 ```
-Usage:
-  cs [flags]
-  cs [command]
 
-Available Commands:
-  completion  Generate the autocompletion script for the specified shell
-  debug       Print debug information like config paths
-  help        Help about any command
-  reset       Reset all stored instances
-  version     Print the version number of claude-squad
+## Privacy and Security
 
-Flags:
-  -y, --autoyes          [experimental] If enabled, all instances will automatically accept prompts for claude code & aider
-  -h, --help             help for claude-squad
-  -p, --program string   Program to run in new instances (e.g. 'aider --model ollama_chat/gemma3:1b')
-```
+This tool processes your browsing history locally on your machine. However, if you use the LLM integration, be aware that:
 
-Run the application with:
+1. The data sent to external LLM APIs may include domain names and timestamps from your browsing history
+2. Consider sanitizing sensitive information before sending to external APIs
+3. For complete privacy, consider using a local LLM like Ollama or LM Studio
+
+## File Locations
+
+Chrome history database is typically located at:
+
+- **Windows**: `C:\Users\[username]\AppData\Local\Google\Chrome\User Data\Default\History`
+- **macOS**: `/Users/[username]/Library/Application Support/Google/Chrome/Default/History`
+- **Linux**: `/home/[username]/.config/google-chrome/Default/History`
+
+## Advanced Usage
+
+### Daily Summaries
+
+You can set up a cron job or scheduled task to run the script daily and generate summaries of your browsing activity:
 
 ```bash
-cs
+# Example cron job (runs daily at 1 AM)
+0 1 * * * cd /path/to/chrome-history-analyzer && python chrome_history_analyzer.py --days 1 --output markdown
 ```
 
-<br />
+### Custom Analysis
 
-<b>To use Claude Squad with Codex or another AI assistant:</b>
-1. Set your OpenAI API key in your environment: `export OPENAI_API_KEY=<key>`
-2. Run `cs -p "codex"` or `cs -p "aider"` or modify your config file (path can be found by running `cs debug`).
+The script is modular and can be extended for custom analysis. See the `analyze_browsing_patterns` function to add your own metrics.
 
-<br />
+## License
 
-#### Menu
-The menu at the bottom of the screen shows available commands: 
+MIT
 
-##### Instance/Session Management
-- `n` - Create a new session
-- `N` - Create a new session with a prompt
-- `D` - Kill (delete) the selected session
-- `↑/j`, `↓/k` - Navigate between sessions
-
-##### Actions
-- `↵/o` - Attach to the selected session to reprompt
-- `ctrl-q` - Detach from session
-- `s` - Commit and push branch to github
-- `c` - Checkout. Commits changes and pauses the session
-- `r` - Resume a paused session
-- `?` - Show help menu
-
-##### Navigation
-- `tab` - Switch between preview tab and diff tab
-- `q` - Quit the application
-- `shift-↓/↑` - scroll in diff view
-
-### How It Works
-
-1. **tmux** to create isolated terminal sessions for each agent
-2. **git worktrees** to isolate codebases so each session works on its own branch
-3. A simple TUI interface for easy navigation and management
-
-### License
-
-[AGPL-3.0](LICENSE.md)
