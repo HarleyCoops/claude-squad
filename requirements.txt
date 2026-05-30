@@ -1,0 +1,31 @@
+# Core dependencies
+watchdog==3.0.0
+pillow==10.1.0
+pyyaml==6.0.1
+schedule==1.2.1
+python-dateutil==2.8.2
+pytz==2023.3.post1
+requests==2.31.0
+apscheduler==3.10.4
+
+# Social media platform SDKs
+tweepy==4.14.0
+facebook-sdk==3.1.0
+instabot==0.117.0
+linkedin-api==2.0.0a5
+
+# Multi-platform API
+social-post-api==1.0.15  # Ayrshare API
+
+# Text processing
+spacy==3.7.2
+rake-nltk==1.0.6
+transformers==4.35.2
+torch==2.1.1
+
+# Image processing
+opencv-python==4.8.1.78
+
+# Optional: AI services
+openai==1.3.5
+

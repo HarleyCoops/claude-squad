@@ -1,4 +1,59 @@
-.idea
-.aider*
-claude-squad
-**.DS_Store
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.env
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Content directories
+content_inbox/
+content_processed/
+content_failed/
+temp/
+
+# Configuration files with sensitive information
+social_media_pipeline/config/settings.py
+.env
+
+# Generated files
+*.json
+*.db
+
+# Example content
+examples/content_inbox/
+examples/content_processed/
+examples/content_failed/
+examples/temp/
+

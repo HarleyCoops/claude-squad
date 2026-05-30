@@ -1,0 +1,67 @@
+# Example metadata.yaml file for a social media post
+
+# Title of the post (optional)
+title: "Announcing Our New Product"
+
+# Description (optional)
+description: "A detailed description of our new product launch"
+
+# Author (optional)
+author: "Marketing Team"
+
+# Creation date (optional)
+created_at: "2023-12-01T10:00:00"
+
+# Alt text for images (optional)
+alt_text: "Product image showing our new device with its key features highlighted"
+
+# Hashtags to include in the post (optional)
+hashtags:
+  - newproduct
+  - launch
+  - technology
+  - innovation
+
+# Scheduling information (optional)
+schedule:
+  # ISO 8601 format date and time
+  time: "2023-12-15T15:30:00"
+  # Timezone (optional, defaults to settings.DEFAULT_TIMEZONE)
+  timezone: "America/Edmonton"
+  # Platforms to post to (optional, defaults to all enabled platforms)
+  platforms:
+    - twitter
+    - facebook
+    - linkedin
+
+# Platform-specific content (optional)
+platforms:
+  # Twitter-specific content
+  twitter:
+    # Override the default text for Twitter
+    text: "🚀 Exciting news! We're launching our new product today. Check it out! #newproduct #launch"
+    # Twitter-specific hashtags
+    hashtags:
+      - newproduct
+      - launch
+      - tech
+  
+  # Instagram-specific content
+  instagram:
+    # Override the default text for Instagram
+    text: "We're thrilled to announce our new product! 🎉 It's been months in the making, and we can't wait for you to try it."
+    # Instagram-specific hashtags
+    hashtags:
+      - newproduct
+      - productlaunch
+      - innovation
+      - technology
+      - techlaunch
+      - newtech
+
+# Custom fields (optional)
+custom:
+  campaign_id: "product-launch-2023"
+  tracking_code: "SM-PL-2023-12"
+  department: "Marketing"
+
